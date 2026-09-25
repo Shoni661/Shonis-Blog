@@ -1,7 +1,7 @@
-/* =========================================================
+/* ==========================================================
    SHONIS BLOG
-   Diseño oscuro / gris / violeta de acento
-   ========================================================= */
+   DARK / CLEAN / RECTANGULAR
+   ========================================================== */
 
 * {
     box-sizing: border-box;
@@ -10,230 +10,236 @@
 }
 
 :root {
-    --bg: #080808;
-    --panel: #101010;
-    --panel-2: #151515;
-    --panel-3: #1a1a1a;
+    --black: #080808;
+    --black-2: #0d0d0d;
+    --card: #111111;
+    --card-hover: #151515;
 
-    --border: #292929;
-    --border-light: #363636;
+    --line: #272727;
+    --line-light: #353535;
 
-    --text: #eeeeee;
-    --text-soft: #c4c4c4;
-    --muted: #858585;
+    --white: #f1f1f1;
+    --gray: #a0a0a0;
+    --gray-dark: #696969;
 
     --purple: #7c3aed;
-    --purple-light: #8b5cf6;
-    --purple-dark: #5b21b6;
+    --purple-hover: #8b5cf6;
 
-    --danger: #ef4444;
+    --red: #e05252;
 
-    --radius: 6px;
+    --radius: 4px;
 }
 
-/* =========================================================
-   BODY
-   ========================================================= */
+/* ==========================================================
+   GENERAL
+   ========================================================== */
+
+html {
+    background: var(--black);
+}
 
 body {
-    background: var(--bg);
-    color: var(--text);
+    min-height: 100vh;
+
+    background: var(--black);
+
+    color: var(--white);
+
     font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
         Arial,
+        Helvetica,
         sans-serif;
 
-    min-height: 100vh;
     line-height: 1.5;
 }
 
-/* =========================================================
+/* ==========================================================
    TOPBAR
-   ========================================================= */
+   ========================================================== */
 
 .topbar {
-    height: 70px;
+    position: sticky;
 
-    background: #0b0b0b;
+    top: 0;
 
-    border-bottom: 1px solid var(--border);
+    z-index: 100;
 
-    display: flex;
+    height: 64px;
+
+    display: grid;
+
+    grid-template-columns: 230px minmax(250px, 600px) auto;
+
     align-items: center;
-
-    padding: 0 30px;
 
     gap: 28px;
 
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 0 28px;
+
+    background: #090909;
+
+    border-bottom: 1px solid var(--line);
 }
 
-/* LOGO */
+/* ==========================================================
+   LOGO
+   ========================================================== */
 
 .logo {
-    color: var(--text);
+    color: var(--white);
 
-    font-size: 21px;
+    font-size: 18px;
+
     font-weight: 700;
 
-    letter-spacing: -0.5px;
-
-    white-space: nowrap;
+    letter-spacing: 0.2px;
 }
-
-/* pequeño detalle violeta */
 
 .logo::after {
     content: "";
 
     display: inline-block;
 
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
 
     margin-left: 7px;
 
-    background: var(--purple-light);
-
     vertical-align: middle;
+
+    background: var(--purple);
 }
 
-/* =========================================================
+/* ==========================================================
    SEARCH
-   ========================================================= */
+   ========================================================== */
 
 #searchInput {
-    flex: 1;
+    width: 100%;
 
-    max-width: 600px;
+    height: 36px;
 
-    height: 40px;
+    padding: 0 12px;
 
-    background: #111111;
+    background: #0f0f0f;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
-    color: var(--text);
+    color: var(--white);
 
-    padding: 0 14px;
+    font-family: inherit;
 
-    font-size: 14px;
+    font-size: 13px;
 
     outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
 }
 
 #searchInput::placeholder {
-    color: #666666;
+    color: #626262;
 }
 
 #searchInput:hover {
-    background: #141414;
+    border-color: var(--line-light);
 }
 
 #searchInput:focus {
-    background: #151515;
+    border-color: #4b2b7c;
 
-    border-color: var(--purple);
+    background: #111111;
 }
 
-/* =========================================================
-   ADMIN LINK
-   ========================================================= */
+/* ==========================================================
+   ADMIN
+   ========================================================== */
 
 .admin-link {
-    color: var(--text-soft);
+    justify-self: end;
 
-    text-decoration: none;
+    padding: 7px 12px;
 
-    font-size: 14px;
-    font-weight: 500;
-
-    padding: 8px 13px;
+    color: #a7a7a7;
 
     border: 1px solid transparent;
 
     border-radius: var(--radius);
 
-    transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+    text-decoration: none;
+
+    font-size: 13px;
 }
 
 .admin-link:hover {
     color: white;
 
-    background: #151515;
+    background: #141414;
 
-    border-color: var(--border-light);
+    border-color: var(--line);
 }
 
-/* =========================================================
-   MAIN LAYOUT
-   ========================================================= */
+/* ==========================================================
+   MAIN
+   ========================================================== */
 
 .layout {
     display: grid;
 
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: 230px minmax(0, 1fr);
 
-    min-height: calc(100vh - 70px);
+    min-height: calc(100vh - 64px);
 }
 
-/* =========================================================
+/* ==========================================================
    SIDEBAR
-   ========================================================= */
+   ========================================================== */
 
 .sidebar {
-    background: #0c0c0c;
-
-    border-right: 1px solid var(--border);
-
-    padding: 28px 18px;
-
     position: sticky;
-    top: 70px;
 
-    height: calc(100vh - 70px);
+    top: 64px;
+
+    height: calc(100vh - 64px);
+
+    padding: 28px 16px;
+
+    background: #0b0b0b;
+
+    border-right: 1px solid var(--line);
 
     overflow-y: auto;
 }
 
 .sidebar h2 {
-    color: #777777;
+    margin: 0 10px 13px;
 
-    font-size: 11px;
+    color: #626262;
+
+    font-size: 10px;
 
     font-weight: 700;
 
+    letter-spacing: 1.6px;
+
     text-transform: uppercase;
-
-    letter-spacing: 1.5px;
-
-    margin-bottom: 14px;
-
-    padding: 0 10px;
 }
 
-/* =========================================================
+/* ==========================================================
    CATEGORY BUTTONS
-   ========================================================= */
+   ========================================================== */
 
 .category-btn {
+    position: relative;
+
+    display: block;
+
     width: 100%;
 
-    min-height: 40px;
+    min-height: 38px;
+
+    margin-bottom: 3px;
+
+    padding: 8px 11px;
 
     background: transparent;
 
@@ -241,43 +247,32 @@ body {
 
     border-radius: var(--radius);
 
-    color: #999999;
-
-    text-align: left;
-
-    padding: 9px 11px;
-
-    margin-bottom: 4px;
+    color: #858585;
 
     cursor: pointer;
 
-    font-size: 14px;
+    font-family: inherit;
 
-    transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
+    font-size: 13px;
+
+    text-align: left;
 }
 
 .category-btn:hover {
-    color: var(--text);
+    color: #d5d5d5;
 
-    background: #151515;
+    background: #121212;
 
-    border-color: #252525;
+    border-color: #202020;
 }
 
 .category-btn.active {
-    color: white;
+    color: #eeeeee;
 
-    background: #18131f;
+    background: #17121d;
 
-    border-color: #39235c;
-
-    position: relative;
+    border-color: #30203f;
 }
-
-/* línea violeta */
 
 .category-btn.active::before {
     content: "";
@@ -285,174 +280,199 @@ body {
     position: absolute;
 
     left: -1px;
-    top: 7px;
-    bottom: 7px;
+
+    top: 6px;
+
+    bottom: 6px;
 
     width: 2px;
 
-    background: var(--purple-light);
+    background: var(--purple);
 }
 
-/* =========================================================
-   CONTENT
-   ========================================================= */
+/* ==========================================================
+   CONTENT AREA
+   ========================================================== */
 
 .content {
     width: 100%;
 
-    max-width: 1100px;
+    max-width: 900px;
 
-    padding: 42px 48px 80px;
+    padding: 45px 50px 100px;
 }
 
-/* =========================================================
+/* ==========================================================
    CONTENT HEADER
-   ========================================================= */
+   ========================================================== */
 
 .content-header {
-    margin-bottom: 30px;
-
     padding-bottom: 22px;
 
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+
+    border-bottom: 1px solid var(--line);
 }
 
 .content-header h1 {
-    font-size: 28px;
+    color: var(--white);
+
+    font-size: 26px;
 
     font-weight: 700;
 
-    letter-spacing: -0.7px;
-
-    color: #f2f2f2;
-
-    margin-bottom: 6px;
+    letter-spacing: -0.5px;
 }
 
 .content-header p {
-    color: var(--muted);
+    margin-top: 5px;
 
-    font-size: 14px;
+    color: var(--gray-dark);
+
+    font-size: 13px;
 }
 
-/* =========================================================
+/* ==========================================================
    POSTS
-   ========================================================= */
+   ========================================================== */
 
 .posts {
     display: flex;
 
     flex-direction: column;
 
-    gap: 18px;
+    gap: 12px;
 }
 
-/* =========================================================
-   POST
-   ========================================================= */
+/* ==========================================================
+   POST CARD
+   ========================================================== */
 
 .post {
-    background: var(--panel);
+    position: relative;
 
-    border: 1px solid var(--border);
+    background: var(--card);
+
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
     overflow: hidden;
 
     transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
+        background 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .post:hover {
-    background: #121212;
+    background: var(--card-hover);
 
-    border-color: #414141;
+    border-color: var(--line-light);
 }
 
-/* =========================================================
+/* línea superior muy sutil */
+
+.post::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 0;
+
+    height: 1px;
+
+    background: var(--purple);
+
+    transition: width 0.2s ease;
+}
+
+.post:hover::before {
+    width: 100%;
+}
+
+/* ==========================================================
    POST IMAGE
-   ========================================================= */
+   ========================================================== */
 
 .post-image {
     display: block;
 
     width: 100%;
 
-    max-height: 420px;
+    max-height: 400px;
 
     object-fit: cover;
 
-    border-bottom: 1px solid var(--border);
+    background: #080808;
 
-    background: #090909;
+    border-bottom: 1px solid var(--line);
 }
 
-/* =========================================================
+/* ==========================================================
    POST BODY
-   ========================================================= */
+   ========================================================== */
 
 .post-body {
-    padding: 22px 24px 25px;
+    padding: 21px 23px 23px;
 }
 
-/* =========================================================
+/* ==========================================================
    CATEGORY
-   ========================================================= */
+   ========================================================== */
 
 .post-category {
-    display: inline-block;
-
-    color: var(--purple-light);
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 8px;
-}
-
-/* =========================================================
-   POST TITLE
-   ========================================================= */
-
-.post-title {
-    color: #f1f1f1;
-
-    font-size: 21px;
-
-    line-height: 1.25;
-
-    font-weight: 700;
-
     margin-bottom: 7px;
 
-    letter-spacing: -0.3px;
+    color: var(--purple-hover);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
 }
 
-/* =========================================================
-   POST DATE
-   ========================================================= */
+/* ==========================================================
+   TITLE
+   ========================================================== */
+
+.post-title {
+    margin-bottom: 5px;
+
+    color: #ededed;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    letter-spacing: -0.25px;
+}
+
+/* ==========================================================
+   DATE
+   ========================================================== */
 
 .post-date {
-    color: #666666;
+    margin-bottom: 15px;
 
-    font-size: 12px;
+    color: #5f5f5f;
 
-    margin-bottom: 16px;
+    font-size: 11px;
 }
 
-/* =========================================================
-   POST CONTENT
-   ========================================================= */
+/* ==========================================================
+   CONTENT
+   ========================================================== */
 
 .post-content {
-    color: #b5b5b5;
+    color: #a7a7a7;
 
     font-size: 14px;
 
@@ -460,46 +480,46 @@ body {
 
     white-space: pre-wrap;
 
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
-/* =========================================================
+/* ==========================================================
    LOADING
-   ========================================================= */
+   ========================================================== */
 
 .loading {
-    color: var(--muted);
-
-    font-size: 14px;
-
     padding: 40px 0;
+
+    color: #666;
+
+    font-size: 13px;
 
     text-align: center;
 }
 
-/* =========================================================
+/* ==========================================================
    EMPTY
-   ========================================================= */
+   ========================================================== */
 
 .empty {
-    background: var(--panel);
+    padding: 45px 20px;
 
-    border: 1px solid var(--border);
+    background: var(--card);
+
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
-    padding: 50px 20px;
+    color: #666;
+
+    font-size: 13px;
 
     text-align: center;
-
-    color: #777777;
-
-    font-size: 14px;
 }
 
-/* =========================================================
-   LOGIN PAGE
-   ========================================================= */
+/* ==========================================================
+   LOGIN
+   ========================================================== */
 
 .login-page {
     min-height: 100vh;
@@ -507,224 +527,178 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     padding: 20px;
 
-    background: var(--bg);
+    background: var(--black);
 }
-
-/* =========================================================
-   LOGIN BOX
-   ========================================================= */
 
 .login-box {
     width: 100%;
 
-    max-width: 390px;
+    max-width: 380px;
 
-    background: var(--panel);
+    padding: 34px;
 
-    border: 1px solid var(--border);
+    background: var(--card);
+
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
-
-    padding: 38px;
-
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
 .login-logo {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+
+    height: 38px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    margin-bottom: 18px;
+    margin-bottom: 17px;
 
-    background: #18121f;
+    background: #17121d;
 
-    border: 1px solid #39235c;
+    border: 1px solid #30203f;
 
     border-radius: var(--radius);
 
-    color: var(--purple-light);
+    color: var(--purple-hover);
 
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .login-box h1 {
     color: white;
 
-    font-size: 25px;
-
-    margin-bottom: 3px;
+    font-size: 23px;
 }
 
 .login-subtitle {
-    color: var(--muted);
+    margin-top: 3px;
 
-    font-size: 13px;
+    margin-bottom: 26px;
 
-    margin-bottom: 28px;
-}
-
-/* =========================================================
-   FORMS
-   ========================================================= */
-
-.login-box label,
-.modal label {
-    display: block;
-
-    color: #a0a0a0;
+    color: #696969;
 
     font-size: 12px;
-
-    font-weight: 600;
-
-    margin-bottom: 7px;
 }
 
-.login-box input,
-.modal input,
-.modal select,
-.modal textarea {
+/* ==========================================================
+   LOGIN FORM
+   ========================================================== */
+
+.login-box label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #969696;
+
+    font-size: 12px;
+}
+
+.login-box input {
     width: 100%;
 
-    background: #0c0c0c;
+    height: 40px;
 
-    color: var(--text);
+    margin-bottom: 16px;
 
-    border: 1px solid var(--border);
+    padding: 0 11px;
+
+    background: #0b0b0b;
+
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
     outline: none;
 
+    color: white;
+
     font-family: inherit;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
 }
 
-.login-box input,
-.modal input,
-.modal select {
-    height: 42px;
-
-    padding: 0 12px;
-
-    margin-bottom: 17px;
+.login-box input:focus {
+    border-color: #4b2b7c;
 }
-
-.modal textarea {
-    min-height: 130px;
-
-    padding: 12px;
-
-    resize: vertical;
-
-    margin-bottom: 17px;
-}
-
-.login-box input:focus,
-.modal input:focus,
-.modal select:focus,
-.modal textarea:focus {
-    background: #111111;
-
-    border-color: var(--purple);
-}
-
-/* =========================================================
-   LOGIN BUTTON
-   ========================================================= */
 
 .login-box button {
     width: 100%;
 
-    height: 42px;
+    height: 40px;
+
+    margin-top: 2px;
 
     background: var(--purple);
-
-    color: white;
 
     border: 1px solid var(--purple);
 
     border-radius: var(--radius);
 
+    color: white;
+
     cursor: pointer;
 
-    font-size: 14px;
-
-    font-weight: 600;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.login-box button:hover {
-    background: var(--purple-light);
-
-    border-color: var(--purple-light);
-}
-
-.login-error {
-    color: #f87171;
+    font-family: inherit;
 
     font-size: 13px;
 
-    margin-top: 12px;
+    font-weight: 600;
+}
 
-    min-height: 18px;
+.login-box button:hover {
+    background: var(--purple-hover);
+
+    border-color: var(--purple-hover);
+}
+
+.login-error {
+    min-height: 17px;
+
+    margin-top: 10px;
+
+    color: #df6c6c;
+
+    font-size: 12px;
 }
 
 .back-link {
     display: block;
 
-    margin-top: 24px;
+    margin-top: 22px;
 
-    color: #777777;
+    color: #656565;
 
     text-align: center;
 
     text-decoration: none;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .back-link:hover {
-    color: var(--text);
+    color: #b0b0b0;
 }
 
-/* =========================================================
-   ADMIN PAGE
-   ========================================================= */
+/* ==========================================================
+   ADMIN
+   ========================================================== */
 
 .admin-page {
     min-height: 100vh;
 
-    background: var(--bg);
+    background: var(--black);
 }
 
-/* =========================================================
-   ADMIN HEADER
-   ========================================================= */
-
 .admin-header {
-    min-height: 70px;
-
-    padding: 0 30px;
-
-    background: #0b0b0b;
-
-    border-bottom: 1px solid var(--border);
+    min-height: 64px;
 
     display: flex;
 
@@ -732,13 +706,17 @@ body {
 
     justify-content: space-between;
 
-    gap: 20px;
+    padding: 0 28px;
+
+    background: #090909;
+
+    border-bottom: 1px solid var(--line);
 }
 
 .admin-title {
-    color: white;
+    color: #eeeeee;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 700;
 }
@@ -748,12 +726,12 @@ body {
 
     align-items: center;
 
-    gap: 8px;
+    gap: 7px;
 }
 
-/* =========================================================
-   BUTTONS
-   ========================================================= */
+/* ==========================================================
+   ADMIN BUTTONS
+   ========================================================== */
 
 .primary-btn,
 .secondary-btn,
@@ -763,104 +741,93 @@ body {
 .close-btn {
     border-radius: var(--radius);
 
-    cursor: pointer;
-
     font-family: inherit;
 
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
+    cursor: pointer;
 }
 
 .primary-btn {
-    background: var(--purple);
+    padding: 8px 13px;
 
-    color: white;
+    background: var(--purple);
 
     border: 1px solid var(--purple);
 
-    padding: 9px 15px;
+    color: white;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 600;
 }
 
 .primary-btn:hover {
-    background: var(--purple-light);
+    background: var(--purple-hover);
 
-    border-color: var(--purple-light);
+    border-color: var(--purple-hover);
 }
 
 .secondary-btn {
-    background: #171717;
+    padding: 8px 13px;
 
-    color: #c7c7c7;
+    background: #151515;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 
-    padding: 9px 15px;
+    color: #b0b0b0;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .secondary-btn:hover {
-    background: #202020;
+    background: #1c1c1c;
 
     color: white;
 
-    border-color: var(--border-light);
+    border-color: var(--line-light);
 }
 
 .logout-btn {
+    padding: 7px 11px;
+
     background: transparent;
 
-    color: #888888;
+    border: 1px solid var(--line);
 
-    border: 1px solid var(--border);
+    color: #777;
 
-    padding: 8px 13px;
-
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .logout-btn:hover {
     color: white;
 
-    background: #171717;
-
-    border-color: var(--border-light);
+    background: #151515;
 }
 
-/* =========================================================
+/* ==========================================================
    ADMIN GRID
-   ========================================================= */
+   ========================================================== */
 
 .admin-grid {
     width: 100%;
 
-    max-width: 1200px;
+    max-width: 1150px;
 
-    margin: 0 auto;
+    margin: auto;
 
-    padding: 35px 30px 70px;
+    padding: 32px 28px 70px;
 
     display: grid;
 
     grid-template-columns: 1fr 1fr;
 
-    gap: 20px;
+    gap: 14px;
 }
 
-/* =========================================================
-   ADMIN CARDS
-   ========================================================= */
-
 .admin-card {
-    background: var(--panel);
+    background: var(--card);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
@@ -868,9 +835,7 @@ body {
 }
 
 .card-header {
-    min-height: 58px;
-
-    padding: 0 18px;
+    min-height: 54px;
 
     display: flex;
 
@@ -878,28 +843,24 @@ body {
 
     justify-content: space-between;
 
-    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+
+    border-bottom: 1px solid var(--line);
 }
 
 .card-header h2 {
-    color: #eeeeee;
+    color: #dedede;
 
-    font-size: 15px;
-
-    font-weight: 600;
+    font-size: 14px;
 }
 
-/* =========================================================
-   ADMIN LIST
-   ========================================================= */
+/* ==========================================================
+   ADMIN POSTS
+   ========================================================== */
 
 .admin-list {
-    padding: 8px;
+    padding: 5px;
 }
-
-/* =========================================================
-   ADMIN POST
-   ========================================================= */
 
 .admin-post {
     display: flex;
@@ -908,11 +869,11 @@ body {
 
     justify-content: space-between;
 
-    gap: 15px;
+    gap: 12px;
 
-    padding: 14px 12px;
+    padding: 12px 10px;
 
-    border-bottom: 1px solid #202020;
+    border-bottom: 1px solid #1f1f1f;
 }
 
 .admin-post:last-child {
@@ -920,7 +881,7 @@ body {
 }
 
 .admin-post:hover {
-    background: #141414;
+    background: #151515;
 }
 
 .admin-post-info {
@@ -930,9 +891,9 @@ body {
 }
 
 .admin-post-title {
-    color: #e5e5e5;
+    color: #dddddd;
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 600;
 
@@ -944,74 +905,66 @@ body {
 }
 
 .admin-post-date {
-    color: #666666;
+    margin-top: 2px;
 
-    font-size: 11px;
+    color: #5e5e5e;
 
-    margin-top: 3px;
+    font-size: 10px;
 }
 
 .admin-post-actions {
     display: flex;
 
-    gap: 6px;
-
-    flex-shrink: 0;
+    gap: 5px;
 }
-
-/* =========================================================
-   EDIT / DELETE
-   ========================================================= */
 
 .edit-btn,
 .delete-btn {
-    padding: 6px 9px;
+    padding: 5px 8px;
 
-    font-size: 12px;
+    font-size: 11px;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 }
 
 .edit-btn {
-    background: #171717;
+    background: #151515;
 
-    color: #bcbcbc;
+    color: #999;
 }
 
 .edit-btn:hover {
-    background: #202020;
-
     color: white;
+
+    background: #202020;
 }
 
 .delete-btn {
-    background: #181010;
+    background: #170e0e;
 
-    color: #e47777;
+    color: #d16a6a;
 
-    border-color: #382020;
+    border-color: #352020;
 }
 
 .delete-btn:hover {
-    background: #281313;
+    background: #251111;
 
-    color: #ff8585;
-
-    border-color: #542626;
+    color: #ed7777;
 }
 
-/* =========================================================
-   CATEGORIES ADMIN
-   ========================================================= */
+/* ==========================================================
+   ADMIN CATEGORIES
+   ========================================================== */
 
 .category-create {
     display: flex;
 
-    gap: 8px;
+    gap: 6px;
 
-    padding: 14px;
+    padding: 12px;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line);
 }
 
 .category-create input {
@@ -1019,27 +972,31 @@ body {
 
     min-width: 0;
 
-    height: 38px;
+    height: 35px;
 
-    padding: 0 10px;
+    padding: 0 9px;
 
-    background: #0c0c0c;
+    background: #0b0b0b;
 
-    color: white;
-
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 
     border-radius: var(--radius);
 
     outline: none;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 12px;
 }
 
 .category-create input:focus {
-    border-color: var(--purple);
+    border-color: #4b2b7c;
 }
 
 .admin-categories {
-    padding: 8px;
+    padding: 5px;
 }
 
 .admin-category {
@@ -1049,13 +1006,13 @@ body {
 
     justify-content: space-between;
 
-    padding: 12px;
+    padding: 10px;
 
-    border-bottom: 1px solid #202020;
+    border-bottom: 1px solid #1f1f1f;
 
-    color: #c5c5c5;
+    color: #bcbcbc;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .admin-category:last-child {
@@ -1063,41 +1020,43 @@ body {
 }
 
 .admin-category:hover {
-    background: #141414;
+    background: #151515;
 }
 
 .category-delete {
-    background: transparent;
+    padding: 4px 7px;
 
-    color: #777777;
+    background: transparent;
 
     border: 1px solid transparent;
 
     border-radius: var(--radius);
 
-    padding: 5px 8px;
+    color: #666;
 
     cursor: pointer;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .category-delete:hover {
-    color: #ef7777;
+    color: #df6b6b;
 
-    background: #181010;
+    background: #170e0e;
 
-    border-color: #382020;
+    border-color: #352020;
 }
 
-/* =========================================================
+/* ==========================================================
    MODAL
-   ========================================================= */
+   ========================================================== */
 
 .modal {
     position: fixed;
 
     inset: 0;
+
+    z-index: 1000;
 
     display: none;
 
@@ -1107,9 +1066,7 @@ body {
 
     padding: 20px;
 
-    background: rgba(0, 0, 0, 0.78);
-
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.82);
 }
 
 .modal.active {
@@ -1119,7 +1076,7 @@ body {
 .modal-box {
     width: 100%;
 
-    max-width: 650px;
+    max-width: 640px;
 
     max-height: 90vh;
 
@@ -1127,17 +1084,13 @@ body {
 
     background: #111111;
 
-    border: 1px solid #363636;
+    border: 1px solid var(--line-light);
 
     border-radius: var(--radius);
-
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
 }
 
 .modal-header {
-    min-height: 60px;
-
-    padding: 0 18px;
+    min-height: 55px;
 
     display: flex;
 
@@ -1145,44 +1098,104 @@ body {
 
     justify-content: space-between;
 
-    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+
+    border-bottom: 1px solid var(--line);
 }
 
 .modal-header h2 {
-    color: white;
+    color: #e5e5e5;
 
-    font-size: 16px;
-
-    font-weight: 600;
+    font-size: 14px;
 }
 
 .close-btn {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+
+    height: 30px;
 
     background: transparent;
 
-    color: #777777;
-
     border: 1px solid transparent;
 
-    font-size: 20px;
+    color: #666;
+
+    font-size: 18px;
 }
 
 .close-btn:hover {
-    background: #191919;
+    background: #181818;
 
-    border-color: var(--border);
+    border-color: var(--line);
 
     color: white;
 }
 
-/* =========================================================
-   MODAL CONTENT
-   ========================================================= */
-
 .modal form {
-    padding: 22px;
+    padding: 20px;
+}
+
+.modal label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #8f8f8f;
+
+    font-size: 11px;
+}
+
+.modal input,
+.modal select {
+    width: 100%;
+
+    height: 39px;
+
+    margin-bottom: 15px;
+
+    padding: 0 10px;
+
+    background: #0b0b0b;
+
+    border: 1px solid var(--line);
+
+    border-radius: var(--radius);
+
+    outline: none;
+
+    color: white;
+
+    font-family: inherit;
+}
+
+.modal textarea {
+    width: 100%;
+
+    min-height: 130px;
+
+    margin-bottom: 15px;
+
+    padding: 10px;
+
+    background: #0b0b0b;
+
+    border: 1px solid var(--line);
+
+    border-radius: var(--radius);
+
+    outline: none;
+
+    color: white;
+
+    font-family: inherit;
+
+    resize: vertical;
+}
+
+.modal input:focus,
+.modal select:focus,
+.modal textarea:focus {
+    border-color: #4b2b7c;
 }
 
 .modal-actions {
@@ -1190,55 +1203,75 @@ body {
 
     justify-content: flex-end;
 
-    gap: 8px;
-
-    padding-top: 5px;
+    gap: 7px;
 }
 
-/* =========================================================
+/* ==========================================================
    SCROLLBAR
-   ========================================================= */
+   ========================================================== */
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+
+    height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #0a0a0a;
+    background: #080808;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #292929;
+    background: #282828;
 
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #3b3b3b;
 }
 
-/* =========================================================
+/* ==========================================================
    SELECTION
-   ========================================================= */
+   ========================================================== */
 
 ::selection {
     background: var(--purple);
+
     color: white;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+/* ==========================================================
+   MOBILE
+   ========================================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 850px) {
+
+    .topbar {
+        grid-template-columns: 1fr auto;
+    }
+
+    #searchInput {
+        grid-column: 1 / -1;
+
+        grid-row: 2;
+    }
+
+    .topbar {
+        height: 110px;
+    }
 
     .layout {
-        grid-template-columns: 190px 1fr;
+        grid-template-columns: 190px minmax(0, 1fr);
+    }
+
+    .sidebar {
+        top: 110px;
+
+        height: calc(100vh - 110px);
     }
 
     .content {
-        padding: 35px 30px 60px;
+        padding: 35px 25px 70px;
     }
 
     .admin-grid {
@@ -1246,30 +1279,14 @@ body {
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 650px) {
 
     .topbar {
         height: auto;
 
-        min-height: 70px;
+        min-height: 105px;
 
-        padding: 15px;
-
-        flex-wrap: wrap;
-
-        gap: 10px;
-    }
-
-    .logo {
-        font-size: 19px;
-    }
-
-    #searchInput {
-        order: 3;
-
-        flex-basis: 100%;
-
-        max-width: none;
+        padding: 13px 15px;
     }
 
     .layout {
@@ -1283,19 +1300,17 @@ body {
 
         height: auto;
 
-        border-right: none;
-
-        border-bottom: 1px solid var(--border);
-
-        padding: 15px;
+        padding: 10px;
 
         display: flex;
 
-        align-items: center;
-
-        gap: 6px;
+        gap: 5px;
 
         overflow-x: auto;
+
+        border-right: none;
+
+        border-bottom: 1px solid var(--line);
     }
 
     .sidebar h2 {
@@ -1311,11 +1326,15 @@ body {
     }
 
     .content {
-        padding: 28px 15px 50px;
+        padding: 28px 14px 60px;
+    }
+
+    .content-header {
+        margin-bottom: 18px;
     }
 
     .content-header h1 {
-        font-size: 24px;
+        font-size: 23px;
     }
 
     .post-body {
@@ -1323,17 +1342,15 @@ body {
     }
 
     .post-title {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .admin-header {
-        padding: 15px;
-
-        flex-wrap: wrap;
+        padding: 13px 15px;
     }
 
     .admin-grid {
-        padding: 20px 15px 50px;
+        padding: 20px 14px 50px;
     }
 
     .admin-post {
@@ -1345,43 +1362,8 @@ body {
     .admin-post-actions {
         width: 100%;
     }
-}
-
-@media (max-width: 480px) {
-
-    .topbar {
-        padding: 12px;
-    }
-
-    .admin-link {
-        padding: 7px 9px;
-    }
-
-    .content {
-        padding: 22px 12px 40px;
-    }
-
-    .post-body {
-        padding: 16px;
-    }
-
-    .post-title {
-        font-size: 18px;
-    }
-
-    .post-content {
-        font-size: 13px;
-    }
 
     .login-box {
-        padding: 25px;
-    }
-
-    .admin-actions {
-        width: 100%;
-    }
-
-    .admin-actions button {
-        flex: 1;
+        padding: 27px;
     }
 }

@@ -7,60 +7,106 @@ const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
-const PORT = 3000;
 
-// ============================================================
+// Render proporciona PORT automáticamente.
+// En tu PC seguirá usando 3000.
+const PORT = process.env.PORT || 3000;
+
+// ==========================================
 // CONFIGURACIÓN
-// ============================================================
+// ==========================================
 
-const ADMIN_USER = "mateo";
-const ADMIN_PASSWORD = "1234";
+const ADMIN_USER = process.env.ADMIN_USER;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("❌ Faltan SUPABASE_URL o SUPABASE_KEY en .env");
+    console.error("❌ Faltan SUPABASE_URL o SUPABASE_KEY.");
     process.exit(1);
 }
+
+if (!ADMIN_USER || !ADMIN_PASSWORD) {
+    console.error("❌ Faltan ADMIN_USER o ADMIN_PASSWORD.");
+    process.exit(1);
+}
+
+if (!SESSION_SECRET) {
+    console.error("❌ Falta SESSION_SECRET.");
+    process.exit(1);
+}
+
+// ==========================================
+// SUPABASE
+// ==========================================
 
 const supabase = createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
-// ============================================================
-// MIDDLEWARE
-// ============================================================
+// ==========================================
+// EXPRESS
+// ==========================================
 
 app.use(express.json());
 
+app.set("trust proxy", 1);
+
+// ==========================================
+// SESIONES
+// ==========================================
+
 app.use(
     session({
-        secret: "mi_clave_secreta_blog_938472",
+        secret: SESSION_SECRET,
+
         resave: false,
+
         saveUninitialized: false,
+
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24
+            maxAge: 1000 * 60 * 60 * 24,
+
+            httpOnly: true,
+
+            sameSite: "lax",
+
+            secure: process.env.NODE_ENV === "production"
         }
     })
 );
 
-app.use(express.static(path.join(__dirname, "public")));
+// ==========================================
+// ARCHIVOS PÚBLICOS
+// ==========================================
 
-// ============================================================
-// FUNCIONES
-// ============================================================
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
+
+// ==========================================
+// FUNCIÓN ADMIN
+// ==========================================
 
 function isAdmin(req) {
-    return req.session && req.session.admin === true;
+    return (
+        req.session &&
+        req.session.admin === true
+    );
 }
 
-// ============================================================
+// ==========================================
 // LOGIN
-// ============================================================
+// ==========================================
 
 app.post("/api/login", (req, res) => {
+
     const username = req.body.username;
     const password = req.body.password;
 
@@ -70,6 +116,7 @@ app.post("/api/login", (req, res) => {
         username === ADMIN_USER &&
         password === ADMIN_PASSWORD
     ) {
+
         req.session.admin = true;
 
         return res.json({
@@ -83,35 +130,41 @@ app.post("/api/login", (req, res) => {
     });
 });
 
-// ============================================================
+// ==========================================
 // SESIÓN
-// ============================================================
+// ==========================================
 
 app.get("/api/session", (req, res) => {
+
     res.json({
         loggedIn: isAdmin(req)
     });
 });
 
-// ============================================================
+// ==========================================
 // LOGOUT
-// ============================================================
+// ==========================================
 
 app.post("/api/logout", (req, res) => {
+
     req.session.destroy(() => {
+
         res.json({
             success: true
         });
+
     });
 });
 
-// ============================================================
+// ==========================================
 // CATEGORÍAS
-// ============================================================
+// ==========================================
 
 // Obtener categorías
 app.get("/api/categories", async (req, res) => {
+
     try {
+
         const { data, error } = await supabase
             .from("categories")
             .select("*")
@@ -120,6 +173,7 @@ app.get("/api/categories", async (req, res) => {
             });
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -130,6 +184,7 @@ app.get("/api/categories", async (req, res) => {
         res.json(data);
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -140,18 +195,22 @@ app.get("/api/categories", async (req, res) => {
 
 // Crear categoría
 app.post("/api/categories", async (req, res) => {
+
     if (!isAdmin(req)) {
+
         return res.status(401).json({
             error: "No autorizado"
         });
     }
 
     try {
+
         const name = String(
             req.body.name || ""
         ).trim();
 
         if (!name) {
+
             return res.status(400).json({
                 error: "Nombre inválido"
             });
@@ -166,6 +225,7 @@ app.post("/api/categories", async (req, res) => {
             .single();
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -176,6 +236,7 @@ app.post("/api/categories", async (req, res) => {
         res.json(data);
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -186,13 +247,16 @@ app.post("/api/categories", async (req, res) => {
 
 // Eliminar categoría
 app.delete("/api/categories/:id", async (req, res) => {
+
     if (!isAdmin(req)) {
+
         return res.status(401).json({
             error: "No autorizado"
         });
     }
 
     try {
+
         const id = Number(req.params.id);
 
         const { error } = await supabase
@@ -201,6 +265,7 @@ app.delete("/api/categories/:id", async (req, res) => {
             .eq("id", id);
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -213,6 +278,7 @@ app.delete("/api/categories/:id", async (req, res) => {
         });
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -221,13 +287,15 @@ app.delete("/api/categories/:id", async (req, res) => {
     }
 });
 
-// ============================================================
+// ==========================================
 // PUBLICACIONES
-// ============================================================
+// ==========================================
 
 // Obtener publicaciones
 app.get("/api/posts", async (req, res) => {
+
     try {
+
         const { data, error } = await supabase
             .from("posts")
             .select("*")
@@ -236,6 +304,7 @@ app.get("/api/posts", async (req, res) => {
             });
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -244,17 +313,25 @@ app.get("/api/posts", async (req, res) => {
         }
 
         const posts = data.map(post => ({
+
             id: post.id,
+
             title: post.title,
+
             content: post.content,
+
             image: post.image || "",
+
             categoryId: post.category_id,
+
             createdAt: post.created_at
+
         }));
 
         res.json(posts);
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -265,13 +342,16 @@ app.get("/api/posts", async (req, res) => {
 
 // Crear publicación
 app.post("/api/posts", async (req, res) => {
+
     if (!isAdmin(req)) {
+
         return res.status(401).json({
             error: "No autorizado"
         });
     }
 
     try {
+
         const title = String(
             req.body.title || ""
         ).trim();
@@ -289,6 +369,7 @@ app.post("/api/posts", async (req, res) => {
         );
 
         if (!title || !content) {
+
             return res.status(400).json({
                 error: "Título y contenido son obligatorios"
             });
@@ -297,15 +378,21 @@ app.post("/api/posts", async (req, res) => {
         const { data, error } = await supabase
             .from("posts")
             .insert({
+
                 title: title,
+
                 content: content,
+
                 image: image,
+
                 category_id: categoryId
+
             })
             .select()
             .single();
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -314,15 +401,23 @@ app.post("/api/posts", async (req, res) => {
         }
 
         res.json({
+
             id: data.id,
+
             title: data.title,
+
             content: data.content,
+
             image: data.image || "",
+
             categoryId: data.category_id,
+
             createdAt: data.created_at
+
         });
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -333,13 +428,16 @@ app.post("/api/posts", async (req, res) => {
 
 // Editar publicación
 app.put("/api/posts/:id", async (req, res) => {
+
     if (!isAdmin(req)) {
+
         return res.status(401).json({
             error: "No autorizado"
         });
     }
 
     try {
+
         const id = Number(req.params.id);
 
         const title = String(
@@ -359,6 +457,7 @@ app.put("/api/posts/:id", async (req, res) => {
         );
 
         if (!title || !content) {
+
             return res.status(400).json({
                 error: "Título y contenido son obligatorios"
             });
@@ -367,16 +466,22 @@ app.put("/api/posts/:id", async (req, res) => {
         const { data, error } = await supabase
             .from("posts")
             .update({
+
                 title: title,
+
                 content: content,
+
                 image: image,
+
                 category_id: categoryId
+
             })
             .eq("id", id)
             .select()
             .single();
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -385,15 +490,23 @@ app.put("/api/posts/:id", async (req, res) => {
         }
 
         res.json({
+
             id: data.id,
+
             title: data.title,
+
             content: data.content,
+
             image: data.image || "",
+
             categoryId: data.category_id,
+
             createdAt: data.created_at
+
         });
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -404,13 +517,16 @@ app.put("/api/posts/:id", async (req, res) => {
 
 // Eliminar publicación
 app.delete("/api/posts/:id", async (req, res) => {
+
     if (!isAdmin(req)) {
+
         return res.status(401).json({
             error: "No autorizado"
         });
     }
 
     try {
+
         const id = Number(req.params.id);
 
         const { error } = await supabase
@@ -419,6 +535,7 @@ app.delete("/api/posts/:id", async (req, res) => {
             .eq("id", id);
 
         if (error) {
+
             console.error(error);
 
             return res.status(500).json({
@@ -431,6 +548,7 @@ app.delete("/api/posts/:id", async (req, res) => {
         });
 
     } catch (error) {
+
         console.error(error);
 
         res.status(500).json({
@@ -439,22 +557,36 @@ app.delete("/api/posts/:id", async (req, res) => {
     }
 });
 
-// ============================================================
-// INICIAR SERVIDOR
-// ============================================================
+// ==========================================
+// SERVIDOR
+// ==========================================
 
 app.listen(PORT, () => {
+
     console.log("");
     console.log("=================================");
-    console.log("       SHONIS BLOG");
+    console.log("          SHONIS BLOG");
     console.log("=================================");
     console.log("");
-    console.log("Blog:  http://localhost:3000");
-    console.log("Admin: http://localhost:3000/login.html");
+
+    console.log(
+        `Blog: http://localhost:${PORT}`
+    );
+
+    console.log(
+        `Admin: http://localhost:${PORT}/login.html`
+    );
+
     console.log("");
-    console.log("Usuario:", ADMIN_USER);
-    console.log("Contraseña:", ADMIN_PASSWORD);
+
+    console.log(
+        "Usuario administrador:",
+        ADMIN_USER
+    );
+
     console.log("");
+
     console.log("🟢 Supabase conectado");
+
     console.log("");
 });

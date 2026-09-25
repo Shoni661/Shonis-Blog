@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Blog</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="logo">✦ Mi Blog</div>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar publicaciones..."
+        >
+
+        <a href="/login.html" class="admin-link">Administrar</a>
+    </header>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+            <h2>Proyectos</h2>
+
+            <button class="category-btn active" data-category="all">
+                Todos
+            </button>
+
+            <div id="categories"></div>
+        </aside>
+
+        <main class="content">
+
+            <div class="content-header">
+                <h1>Publicaciones</h1>
+                <p>Mis proyectos, ideas y cosas que voy creando.</p>
+            </div>
+
+            <section id="postsContainer" class="posts">
+                <p class="loading">Cargando publicaciones...</p>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="/app.js"></script>
+
+</body>
+</html>

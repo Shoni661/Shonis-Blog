@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel | Mi Blog</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="logo">
+            ✦ Mi Blog
+        </div>
+
+        <div class="admin-title">
+            Panel de administración
+        </div>
+
+        <div class="admin-actions">
+
+            <a href="/" class="admin-link">
+                Ver blog
+            </a>
+
+            <button id="logoutBtn" class="logout-btn">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="admin-page">
+
+        <section class="admin-header">
+
+            <div>
+                <h1>Panel de administración</h1>
+
+                <p>
+                    Desde acá podés administrar tus publicaciones y categorías.
+                </p>
+            </div>
+
+            <button id="newPostBtn" class="primary-btn">
+                + Nueva publicación
+            </button>
+
+        </section>
+
+
+        <section class="admin-grid">
+
+
+            <!-- PUBLICACIONES -->
+
+            <div class="admin-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Publicaciones</h2>
+                        <p>Administrá las publicaciones de tu blog.</p>
+                    </div>
+
+                </div>
+
+                <div id="adminPosts" class="admin-list">
+
+                    <p class="loading">
+                        Cargando publicaciones...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORÍAS -->
+
+            <div class="admin-card categories-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Categorías</h2>
+                        <p>Organizá tus proyectos.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="category-create">
+
+                    <input
+                        type="text"
+                        id="newCategory"
+                        placeholder="Nueva categoría"
+                    >
+
+                    <button
+                        id="addCategoryBtn"
+                        class="primary-btn"
+                    >
+                        Crear
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="adminCategories"
+                    class="admin-categories"
+                >
+                    <p class="loading">
+                        Cargando categorías...
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+
+    <div id="modal" class="modal">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2 id="modalTitle">
+                        Nueva publicación
+                    </h2>
+
+                    <p>
+                        Escribí el contenido de tu publicación.
+                    </p>
+                </div>
+
+                <button
+                    id="closeModalBtn"
+                    class="close-btn"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="postForm">
+
+
+                <label for="postTitle">
+                    Título
+                </label>
+
+                <input
+                    type="text"
+                    id="postTitle"
+                    required
+                    placeholder="Título de la publicación"
+                >
+
+
+                <label for="postCategory">
+                    Categoría
+                </label>
+
+                <select
+                    id="postCategory"
+                    required
+                ></select>
+
+
+                <label for="postImage">
+                    Imagen
+                </label>
+
+                <input
+                    type="text"
+                    id="postImage"
+                    placeholder="URL de la imagen (opcional)"
+                >
+
+
+                <label for="postContent">
+                    Contenido
+                </label>
+
+                <textarea
+                    id="postContent"
+                    rows="10"
+                    required
+                    placeholder="Escribí tu publicación..."
+                ></textarea>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        id="cancelBtn"
+                        class="secondary-btn"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Guardar publicación
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="/admin.js"></script>
+
+</body>
+</html>

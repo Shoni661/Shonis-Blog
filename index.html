@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Blog</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #0b0a10;
+        --panel: #11101a;
+        --panel2: #171521;
+        --border: #302744;
+        --purple: #9b5cff;
+        --purple2: #6f35d9;
+        --text: #eeeaff;
+        --muted: #9b96aa;
+        --danger: #ff4f6d;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 20% 0%, #24133e 0%, transparent 35%),
+            radial-gradient(circle at 100% 100%, #19102d 0%, transparent 35%),
+            var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+        font-family: inherit;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+        height: 70px;
+        background: rgba(13, 12, 19, 0.92);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(15px);
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        min-width: 220px;
+    }
+
+    .logo span {
+        color: var(--purple);
+    }
+
+    .search {
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        position: relative;
+    }
+
+    .search input {
+        width: 100%;
+        background: #181620;
+        border: 1px solid var(--border);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        outline: none;
+        transition: .2s;
+    }
+
+    .search input:focus {
+        border-color: var(--purple);
+        box-shadow: 0 0 0 3px rgba(155, 92, 255, .12);
+    }
+
+    .profile {
+        min-width: 220px;
+        text-align: right;
+        color: var(--muted);
+    }
+
+    /* ================= LAYOUT ================= */
+
+    .layout {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 850px);
+        gap: 25px;
+        max-width: 1150px;
+        margin: 30px auto;
+        padding: 0 20px;
+        justify-content: center;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    aside {
+        background: rgba(17, 16, 26, .85);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px;
+        height: fit-content;
+        position: sticky;
+        top: 95px;
+    }
+
+    .side-title {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 5px 10px 12px;
+    }
+
+    .category-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .category {
+        border: none;
+        background: transparent;
+        color: #c7c2d4;
+        padding: 11px 12px;
+        border-radius: 10px;
+        text-align: left;
+        transition: .2s;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .category:hover {
+        background: #211c2e;
+        color: white;
+    }
+
+    .category.active {
+        background: rgba(155, 92, 255, .16);
+        color: white;
+        border: 1px solid rgba(155, 92, 255, .3);
+    }
+
+    .category-count {
+        font-size: 11px;
+        color: var(--muted);
+    }
+
+    .new-category {
+        width: 100%;
+        margin-top: 15px;
+        border: 1px dashed #49366b;
+        background: transparent;
+        color: var(--purple);
+        padding: 11px;
+        border-radius: 10px;
+        transition: .2s;
+    }
+
+    .new-category:hover {
+        background: rgba(155, 92, 255, .1);
+        border-color: var(--purple);
+    }
+
+    /* ================= MAIN ================= */
+
+    main {
+        min-width: 0;
+    }
+
+    .page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .page-head h1 {
+        font-size: 27px;
+    }
+
+    .page-head p {
+        color: var(--muted);
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    .new-post {
+        background: linear-gradient(135deg, var(--purple), var(--purple2));
+        color: white;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 11px;
+        font-weight: bold;
+        box-shadow: 0 8px 25px rgba(111, 53, 217, .25);
+        transition: .2s;
+    }
+
+    .new-post:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(111, 53, 217, .4);
+    }
+
+    /* ================= POSTS ================= */
+
+    #posts {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .post {
+        background: rgba(17, 16, 26, .9);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+        transition: .25s;
+    }
+
+    .post:hover {
+        border-color: #4b3768;
+        transform: translateY(-2px);
+    }
+
+    .post-image {
+        width: 100%;
+        max-height: 330px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .post-content {
+        padding: 22px;
+    }
+
+    .post-category {
+        color: var(--purple);
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+    }
+
+    .post h2 {
+        font-size: 23px;
+        margin: 8px 0;
+    }
+
+    .post-text {
+        color: #bbb6c8;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+
+    .post-footer {
+        margin-top: 20px;
+        padding-top: 14px;
+        border-top: 1px solid #272330;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .post-actions {
+        display: flex;
+        gap: 7px;
+    }
+
+    .small-btn {
+        background: #201c29;
+        border: 1px solid #352d40;
+        color: #cfc9dc;
+        padding: 7px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .small-btn:hover {
+        border-color: var(--purple);
+        color: white;
+    }
+
+    .delete-btn:hover {
+        border-color: var(--danger);
+        color: var(--danger);
+    }
+
+    /* ================= EMPTY ================= */
+
+    .empty {
+        border: 1px dashed #403750;
+        background: rgba(17, 16, 26, .5);
+        padding: 55px 20px;
+        border-radius: 18px;
+        text-align: center;
+        color: var(--muted);
+    }
+
+    .empty-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+        backdrop-filter: blur(7px);
+    }
+
+    .modal-bg.show {
+        display: flex;
+    }
+
+    .modal {
+        width: 100%;
+        max-width: 620px;
+        max-height: 90vh;
+        overflow-y: auto;
+        background: #12111a;
+        border: 1px solid #44335e;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 25px 80px rgba(0,0,0,.55);
+    }
+
+    .modal h2 {
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #c9c3d5;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        background: #0d0c12;
+        border: 1px solid #342d40;
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    .form-group textarea {
+        min-height: 180px;
+        resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: var(--purple);
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .cancel {
+        background: #211e28;
+        border: 1px solid #393341;
+        color: #ccc;
+        padding: 11px 18px;
+        border-radius: 10px;
+    }
+
+    .save {
+        background: var(--purple);
+        border: none;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: #1c1924;
+        border: 1px solid #44335e;
+        padding: 14px 18px;
+        border-radius: 12px;
+        opacity: 0;
+        transform: translateY(15px);
+        pointer-events: none;
+        transition: .3s;
+        z-index: 200;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width: 800px) {
+
+        header {
+            padding: 0 15px;
+        }
+
+        .logo {
+            min-width: auto;
+        }
+
+        .profile {
+            display: none;
+        }
+
+        .search {
+            margin-left: 15px;
+        }
+
+        .layout {
+            grid-template-columns: 1fr;
+            margin-top: 15px;
+        }
+
+        aside {
+            position: static;
+        }
+
+        .category-list {
+            flex-direction: row;
+            overflow-x: auto;
+        }
+
+        .category {
+            white-space: nowrap;
+        }
+
+        .new-category {
+            margin-top: 10px;
+        }
+    }
+
+    @media(max-width: 500px) {
+
+        header {
+            height: auto;
+            min-height: 65px;
+            gap: 10px;
+        }
+
+        .logo {
+            font-size: 18px;
+        }
+
+        .search input {
+            padding: 9px 12px;
+        }
+
+        .page-head {
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .page-head h1 {
+            font-size: 22px;
+        }
+
+        .new-post {
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        .post-content {
+            padding: 17px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ✦ <span>Mi</span> Blog
+    </div>
+
+    <div class="search">
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Buscar publicaciones..."
+            oninput="renderPosts()"
+        >
+    </div>
+
+    <div class="profile">
+        Mi espacio personal
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside>
+
+        <div class="side-title">
+            CATEGORÍAS
+        </div>
+
+        <div class="category-list" id="categoryList"></div>
+
+        <button class="new-category" onclick="openCategoryModal()">
+            ＋ Nueva categoría
+        </button>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <div class="page-head">
+
+            <div>
+                <h1 id="pageTitle">
+                    Todas las publicaciones
+                </h1>
+
+                <p id="pageDescription">
+                    Tus anuncios y proyectos.
+                </p>
+            </div>
+
+            <button class="new-post" onclick="openPostModal()">
+                ＋ Publicar
+            </button>
+
+        </div>
+
+        <div id="posts"></div>
+
+    </main>
+
+</div>
+
+
+<!-- ================= MODAL POST ================= -->
+
+<div class="modal-bg" id="postModal">
+
+    <div class="modal">
+
+        <h2 id="postModalTitle">
+            Nueva publicación
+        </h2>
+
+        <div class="form-group">
+
+            <label>Título</label>
+
+            <input
+                id="postTitle"
+                type="text"
+                placeholder="Ej: Nuevo proyecto en Blender"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Categoría</label>
+
+            <select id="postCategory"></select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Imagen URL (opcional)</label>
+
+            <input
+                id="postImage"
+                type="text"
+                placeholder="https://..."
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Contenido</label>
+
+            <textarea
+                id="postText"
+                placeholder="Escribí tu anuncio..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel"
+                onclick="closePostModal()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="save"
+                onclick="savePost()"
+            >
+                Publicar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MODAL CATEGORIA ================= -->
+
+<div class="modal-bg" id="categoryModal">
+
+    <div class="modal">
+
+        <h2>Nueva categoría</h2>
+
+        <div class="form-group">
+
+            <label>Nombre</label>
+
+            <input
+                id="categoryName"
+                type="text"
+                placeholder="Ej: Mis juegos"
+            >
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel"
+                onclick="closeCategoryModal()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="save"
+                onclick="saveCategory()"
+            >
+                Crear
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* ============================================================
+   DATOS
+============================================================ */
+
+let categories = JSON.parse(
+    localStorage.getItem("blog_categories")
+) || [
+    {
+        id: "general",
+        name: "General"
+    }
+];
+
+
+let posts = JSON.parse(
+    localStorage.getItem("blog_posts")
+) || [];
+
+
+let selectedCategory = "all";
+
+let editingPost = null;
+
+
+/* ============================================================
+   GUARDAR
+============================================================ */
+
+function saveData() {
+
+    localStorage.setItem(
+        "blog_categories",
+        JSON.stringify(categories)
+    );
+
+    localStorage.setItem(
+        "blog_posts",
+        JSON.stringify(posts)
+    );
+}
+
+
+/* ============================================================
+   CATEGORIAS
+============================================================ */
+
+function renderCategories() {
+
+    const container =
+        document.getElementById("categoryList");
+
+    container.innerHTML = "";
+
+
+    // TODOS
+
+    const allButton =
+        document.createElement("button");
+
+    allButton.className =
+        "category " +
+        (selectedCategory === "all" ? "active" : "");
+
+    allButton.innerHTML = `
+        <span>🏠 Todas</span>
+        <span class="category-count">
+            ${posts.length}
+        </span>
+    `;
+
+    allButton.onclick = () => {
+
+        selectedCategory = "all";
+
+        updatePage();
+
+    };
+
+    container.appendChild(allButton);
+
+
+    // CATEGORIAS
+
+    categories.forEach(category => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "category " +
+            (selectedCategory === category.id
+                ? "active"
+                : "");
+
+        const count =
+            posts.filter(
+                post => post.category === category.id
+            ).length;
+
+
+        button.innerHTML = `
+            <span>📁 ${escapeHTML(category.name)}</span>
+            <span class="category-count">
+                ${count}
+            </span>
+        `;
+
+
+        button.onclick = () => {
+
+            selectedCategory = category.id;
+
+            updatePage();
+
+        };
+
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* ============================================================
+   POSTS
+============================================================ */
+
+function renderPosts() {
+
+    const container =
+        document.getElementById("posts");
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    let filtered = posts;
+
+
+    if (selectedCategory !== "all") {
+
+        filtered =
+            filtered.filter(
+                post =>
+                    post.category === selectedCategory
+            );
+
+    }
+
+
+    if (search) {
+
+        filtered =
+            filtered.filter(post =>
+
+                post.title
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                post.text
+                    .toLowerCase()
+                    .includes(search)
+
+            );
+
+    }
+
+
+    // Más nuevos primero
+
+    filtered.sort(
+        (a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+    );
+
+
+    if (filtered.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📭
+                </div>
+
+                <h3>
+                    No hay publicaciones
+                </h3>
+
+                <p>
+                    Todavía no hay anuncios en esta sección.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    filtered.forEach(post => {
+
+        const category =
+            categories.find(
+                c => c.id === post.category
+            );
+
+
+        const article =
+            document.createElement("article");
+
+        article.className = "post";
+
+
+        let image = "";
+
+        if (post.image) {
+
+            image = `
+                <img
+                    class="post-image"
+                    src="${escapeAttribute(post.image)}"
+                    alt=""
+                    onerror="this.style.display='none'"
+                >
+            `;
+
+        }
+
+
+        article.innerHTML = `
+
+            ${image}
+
+            <div class="post-content">
+
+                <div class="post-category">
+                    ${escapeHTML(
+                        category
+                            ? category.name
+                            : "Sin categoría"
+                    )}
+                </div>
+
+                <h2>
+                    ${escapeHTML(post.title)}
+                </h2>
+
+                <div class="post-text">
+                    ${escapeHTML(post.text)}
+                </div>
+
+                <div class="post-footer">
+
+                    <span>
+                        ${formatDate(post.date)}
+                    </span>
+
+                    <div class="post-actions">
+
+                        <button
+                            class="small-btn"
+                            onclick="editPost('${post.id}')"
+                        >
+                            ✏️ Editar
+                        </button>
+
+                        <button
+                            class="small-btn delete-btn"
+                            onclick="deletePost('${post.id}')"
+                        >
+                            🗑️ Eliminar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(article);
+
+    });
+
+}
+
+
+/* ============================================================
+   ACTUALIZAR PÁGINA
+============================================================ */
+
+function updatePage() {
+
+    renderCategories();
+
+    renderPosts();
+
+
+    const title =
+        document.getElementById("pageTitle");
+
+    const description =
+        document.getElementById("pageDescription");
+
+
+    if (selectedCategory === "all") {
+
+        title.textContent =
+            "Todas las publicaciones";
+
+        description.textContent =
+            "Tus anuncios y proyectos.";
+
+    } else {
+
+        const category =
+            categories.find(
+                c => c.id === selectedCategory
+            );
+
+
+        if (category) {
+
+            title.textContent =
+                category.name;
+
+            description.textContent =
+                "Publicaciones de esta categoría.";
+
+        }
+
+    }
+
+
+    updateCategorySelect();
+
+}
+
+
+/* ============================================================
+   MODAL POST
+============================================================ */
+
+function openPostModal() {
+
+    if (categories.length === 0) {
+
+        showToast(
+            "Primero tenés que crear una categoría."
+        );
+
+        return;
+
+    }
+
+
+    editingPost = null;
+
+
+    document.getElementById(
+        "postModalTitle"
+    ).textContent =
+        "Nueva publicación";
+
+
+    document.getElementById(
+        "postTitle"
+    ).value = "";
+
+
+    document.getElementById(
+        "postImage"
+    ).value = "";
+
+
+    document.getElementById(
+        "postText"
+    ).value = "";
+
+
+    updateCategorySelect();
+
+
+    if (selectedCategory !== "all") {
+
+        document.getElementById(
+            "postCategory"
+        ).value = selectedCategory;
+
+    }
+
+
+    document
+        .getElementById("postModal")
+        .classList.add("show");
+
+}
+
+
+function closePostModal() {
+
+    document
+        .getElementById("postModal")
+        .classList.remove("show");
+
+}
+
+
+/* ============================================================
+   SELECT CATEGORIAS
+============================================================ */
+
+function updateCategorySelect() {
+
+    const select =
+        document.getElementById("postCategory");
+
+    select.innerHTML = "";
+
+
+    categories.forEach(category => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            category.id;
+
+        option.textContent =
+            category.name;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* ============================================================
+   GUARDAR POST
+============================================================ */
+
+function savePost() {
+
+    const title =
+        document
+            .getElementById("postTitle")
+            .value
+            .trim();
+
+
+    const category =
+        document
+            .getElementById("postCategory")
+            .value;
+
+
+    const image =
+        document
+            .getElementById("postImage")
+            .value
+            .trim();
+
+
+    const text =
+        document
+            .getElementById("postText")
+            .value
+            .trim();
+
+
+    if (!title) {
+
+        showToast(
+            "Poné un título."
+        );
+
+        return;
+
+    }
+
+
+    if (!text) {
+
+        showToast(
+            "Escribí algo en la publicación."
+        );
+
+        return;
+
+    }
+
+
+    if (editingPost) {
+
+        const post =
+            posts.find(
+                p => p.id === editingPost
+            );
+
+
+        if (post) {
+
+            post.title = title;
+            post.category = category;
+            post.image = image;
+            post.text = text;
+
+        }
+
+
+        showToast(
+            "Publicación actualizada."
+        );
+
+    } else {
+
+        posts.push({
+
+            id:
+                Date.now().toString(),
+
+            title:
+                title,
+
+            category:
+                category,
+
+            image:
+                image,
+
+            text:
+                text,
+
+            date:
+                new Date().toISOString()
+
+        });
+
+
+        showToast(
+            "Publicación creada."
+        );
+
+    }
+
+
+    saveData();
+
+    closePostModal();
+
+    updatePage();
+
+}
+
+
+/* ============================================================
+   EDITAR POST
+============================================================ */
+
+function editPost(id) {
+
+    const post =
+        posts.find(
+            p => p.id === id
+        );
+
+
+    if (!post) return;
+
+
+    editingPost = id;
+
+
+    document.getElementById(
+        "postModalTitle"
+    ).textContent =
+        "Editar publicación";
+
+
+    document.getElementById(
+        "postTitle"
+    ).value =
+        post.title;
+
+
+    document.getElementById(
+        "postImage"
+    ).value =
+        post.image || "";
+
+
+    document.getElementById(
+        "postText"
+    ).value =
+        post.text;
+
+
+    updateCategorySelect();
+
+
+    document.getElementById(
+        "postCategory"
+    ).value =
+        post.category;
+
+
+    document
+        .getElementById("postModal")
+        .classList.add("show");
+
+}
+
+
+/* ============================================================
+   ELIMINAR POST
+============================================================ */
+
+function deletePost(id) {
+
+    const post =
+        posts.find(
+            p => p.id === id
+        );
+
+
+    if (!post) return;
+
+
+    if (
+        !confirm(
+            `¿Eliminar "${post.title}"?`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    posts =
+        posts.filter(
+            p => p.id !== id
+        );
+
+
+    saveData();
+
+    updatePage();
+
+    showToast(
+        "Publicación eliminada."
+    );
+
+}
+
+
+/* ============================================================
+   MODAL CATEGORIA
+============================================================ */
+
+function openCategoryModal() {
+
+    document.getElementById(
+        "categoryName"
+    ).value = "";
+
+
+    document
+        .getElementById("categoryModal")
+        .classList.add("show");
+
+
+    setTimeout(() => {
+
+        document
+            .getElementById("categoryName")
+            .focus();
+
+    }, 100);
+
+}
+
+
+function closeCategoryModal() {
+
+    document
+        .getElementById("categoryModal")
+        .classList.remove("show");
+
+}
+
+
+/* ============================================================
+   CREAR CATEGORIA
+============================================================ */
+
+function saveCategory() {
+
+    const name =
+        document
+            .getElementById("categoryName")
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        showToast(
+            "Poné un nombre."
+        );
+
+        return;
+
+    }
+
+
+    const exists =
+        categories.some(
+            category =>
+                category.name.toLowerCase() ===
+                name.toLowerCase()
+        );
+
+
+    if (exists) {
+
+        showToast(
+            "Esa categoría ya existe."
+        );
+
+        return;
+
+    }
+
+
+    const id =
+        Date.now().toString();
+
+
+    categories.push({
+
+        id: id,
+
+        name: name
+
+    });
+
+
+    saveData();
+
+    closeCategoryModal();
+
+    selectedCategory = id;
+
+    updatePage();
+
+    showToast(
+        "Categoría creada."
+    );
+
+}
+
+
+/* ============================================================
+   UTILIDADES
+============================================================ */
+
+function formatDate(date) {
+
+    return new Date(date).toLocaleDateString(
+        "es-AR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+/*
+    Seguridad básica para que el contenido
+    de las publicaciones no pueda romper el HTML.
+*/
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function escapeAttribute(text) {
+
+    return escapeHTML(text);
+
+}
+
+
+/* ============================================================
+   CERRAR MODALES AL HACER CLICK AFUERA
+============================================================ */
+
+document
+    .getElementById("postModal")
+    .addEventListener("click", function(e) {
+
+        if (e.target === this) {
+
+            closePostModal();
+
+        }
+
+    });
+
+
+document
+    .getElementById("categoryModal")
+    .addEventListener("click", function(e) {
+
+        if (e.target === this) {
+
+            closeCategoryModal();
+
+        }
+
+    });
+
+
+/* ============================================================
+   ENTER PARA CREAR CATEGORIA
+============================================================ */
+
+document
+    .getElementById("categoryName")
+    .addEventListener("keydown", function(e) {
+
+        if (e.key === "Enter") {
+
+            saveCategory();
+
+        }
+
+    });
+
+
+/* ============================================================
+   INICIAR
+============================================================ */
+
+updatePage();
+
+</script>
+
+</body>
+</html>
